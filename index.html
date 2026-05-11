@@ -11,15 +11,11 @@
 --bg: #0a0a0f;
 --panel: #12121a;
 --border: #2a2a3a;
---p1: #ff4444;
---p1dark: #aa1111;
---p2: #44aaff;
---p2dark: #1166bb;
+--red: #ff4444;
+--blue: #44aaff;
 --gold: #ffd700;
 --text: #e8e8f0;
 --muted: #666680;
---green: #44ff88;
---orange: #ff8833;
 }
 
 - { margin: 0; padding: 0; box-sizing: border-box; }
@@ -28,1603 +24,216 @@ body {
 background: var(–bg);
 color: var(–text);
 font-family: ‘Barlow Condensed’, sans-serif;
-overflow-x: hidden;
 min-height: 100vh;
+overflow-x: hidden;
 }
 
-/* Animated background grid */
 body::before {
 content: ‘’;
 position: fixed;
 inset: 0;
 background-image:
-linear-gradient(rgba(255,68,68,0.04) 1px, transparent 1px),
-linear-gradient(90deg, rgba(68,170,255,0.04) 1px, transparent 1px);
-background-size: 60px 60px;
-animation: gridMove 20s linear infinite;
+linear-gradient(rgba(255,68,68,0.03) 1px, transparent 1px),
+linear-gradient(90deg, rgba(68,170,255,0.03) 1px, transparent 1px);
+background-size: 50px 50px;
 pointer-events: none;
 z-index: 0;
 }
 
-@keyframes gridMove {
-0% { background-position: 0 0; }
-100% { background-position: 60px 60px; }
-}
-
-/* Header */
 header {
 position: relative;
 z-index: 10;
-text-align: center;
-padding: 40px 20px 20px;
-border-bottom: 2px solid var(–border);
-background: linear-gradient(180deg, rgba(255,68,68,0.08) 0%, transparent 100%);
+display: flex;
+align-items: center;
+justify-content: space-between;
+padding: 16px 32px;
+border-bottom: 1px solid var(–border);
+background: rgba(10,10,15,0.95);
+backdrop-filter: blur(10px);
 }
 
-.site-logo {
+.logo {
 font-family: ‘Bebas Neue’, sans-serif;
-font-size: clamp(48px, 10vw, 96px);
-letter-spacing: 6px;
-line-height: 0.9;
-background: linear-gradient(135deg, var(–p1) 0%, var(–gold) 50%, var(–p2) 100%);
+font-size: 28px;
+letter-spacing: 4px;
+background: linear-gradient(90deg, var(–red), var(–gold), var(–blue));
 -webkit-background-clip: text;
 -webkit-text-fill-color: transparent;
 background-clip: text;
-filter: drop-shadow(0 0 30px rgba(255,68,68,0.4));
-animation: pulseGlow 3s ease-in-out infinite;
 }
 
-@keyframes pulseGlow {
-0%, 100% { filter: drop-shadow(0 0 20px rgba(255,68,68,0.4)); }
-50% { filter: drop-shadow(0 0 50px rgba(255,215,0,0.6)); }
-}
-
-.site-tagline {
+.header-tag {
 font-family: ‘Share Tech Mono’, monospace;
+font-size: 11px;
 color: var(–muted);
-font-size: 14px;
-letter-spacing: 4px;
+letter-spacing: 3px;
 text-transform: uppercase;
-margin-top: 8px;
 }
 
-nav {
-display: flex;
-justify-content: center;
-gap: 4px;
-margin-top: 20px;
-flex-wrap: wrap;
-padding: 0 10px;
-}
-
-nav button {
+.badge {
 font-family: ‘Barlow Condensed’, sans-serif;
 font-weight: 700;
-font-size: 15px;
+font-size: 12px;
 letter-spacing: 2px;
 text-transform: uppercase;
-background: transparent;
-border: 1px solid var(–border);
-color: var(–muted);
-padding: 8px 20px;
-cursor: pointer;
-transition: all 0.2s;
-clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
-}
-
-nav button:hover, nav button.active {
-background: var(–p1);
-border-color: var(–p1);
+background: var(–red);
 color: white;
+padding: 4px 12px;
+clip-path: polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%);
 }
 
-/* Pages */
-.page { display: none; position: relative; z-index: 1; }
-.page.active { display: block; }
-
-/* === GAME PAGE === */
-#page-game {
-padding: 20px;
+main {
+position: relative;
+z-index: 1;
 display: flex;
 flex-direction: column;
 align-items: center;
+padding: 24px 16px;
 gap: 16px;
 }
 
-.player-hud {
-display: grid;
-grid-template-columns: 1fr auto 1fr;
-width: 100%;
-max-width: 900px;
-gap: 12px;
-align-items: center;
-}
-
-.player-card {
-padding: 12px 20px;
-border: 2px solid;
-background: rgba(0,0,0,0.4);
-position: relative;
-overflow: hidden;
-}
-
-.player-card.p1 { border-color: var(–p1); }
-.player-card.p2 { border-color: var(–p2); text-align: right; }
-
-.player-card::before {
-content: ‘’;
-position: absolute;
-inset: 0;
-opacity: 0.06;
-}
-.player-card.p1::before { background: var(–p1); }
-.player-card.p2::before { background: var(–p2); }
-
-.player-name {
-font-family: ‘Bebas Neue’, sans-serif;
-font-size: 22px;
-letter-spacing: 3px;
-}
-.p1 .player-name { color: var(–p1); }
-.p2 .player-name { color: var(–p2); }
-
-.player-score {
-font-family: ‘Bebas Neue’, sans-serif;
-font-size: 48px;
-line-height: 1;
-}
-.p1 .player-score { color: var(–p1); }
-.p2 .player-score { color: var(–p2); }
-
-.player-keys {
-font-family: ‘Share Tech Mono’, monospace;
-font-size: 11px;
-color: var(–muted);
-margin-top: 4px;
-}
-
-.round-display {
-text-align: center;
-}
-
-.round-label {
-font-family: ‘Share Tech Mono’, monospace;
-font-size: 11px;
-color: var(–muted);
-letter-spacing: 3px;
-}
-
-.round-num {
-font-family: ‘Bebas Neue’, sans-serif;
-font-size: 36px;
-color: var(–gold);
-line-height: 1;
-}
-
-/* Canvas container */
-.canvas-wrap {
-position: relative;
-width: 100%;
-max-width: 900px;
-border: 2px solid var(–border);
-background: #0d1117;
-overflow: hidden;
-}
-
-canvas {
-display: block;
-width: 100%;
-image-rendering: pixelated;
-}
-
-.canvas-overlay {
-position: absolute;
-inset: 0;
-display: flex;
-flex-direction: column;
-align-items: center;
-justify-content: center;
-gap: 16px;
-background: rgba(0,0,0,0.85);
-backdrop-filter: blur(4px);
-}
-
-.canvas-overlay.hidden { display: none; }
-
-.overlay-title {
-font-family: ‘Bebas Neue’, sans-serif;
-font-size: clamp(36px, 6vw, 64px);
-letter-spacing: 4px;
-text-align: center;
-}
-
-.overlay-sub {
-font-family: ‘Share Tech Mono’, monospace;
-font-size: 13px;
-color: var(–muted);
-letter-spacing: 2px;
-text-align: center;
-line-height: 1.8;
-}
-
-.btn-start {
-font-family: ‘Bebas Neue’, sans-serif;
-font-size: 24px;
-letter-spacing: 4px;
-padding: 14px 48px;
-background: var(–p1);
-color: white;
-border: none;
-cursor: pointer;
-clip-path: polygon(12px 0%, 100% 0%, calc(100% - 12px) 100%, 0% 100%);
-transition: all 0.2s;
-animation: btnPulse 2s ease-in-out infinite;
-}
-
-@keyframes btnPulse {
-0%, 100% { box-shadow: 0 0 20px rgba(255,68,68,0.4); }
-50% { box-shadow: 0 0 40px rgba(255,68,68,0.8); }
-}
-
-.btn-start:hover {
-background: #ff6666;
-transform: scale(1.05);
-}
-
-/* Timer bar */
-.timer-bar-wrap {
-width: 100%;
-max-width: 900px;
-height: 6px;
-background: var(–border);
-overflow: hidden;
-}
-
-.timer-bar {
-height: 100%;
-background: linear-gradient(90deg, var(–p1), var(–gold), var(–p2));
-width: 100%;
-transition: width 0.1s linear;
-}
-
-/* Controls cheatsheet */
-.controls-grid {
+.controls-bar {
 display: grid;
 grid-template-columns: 1fr 1fr;
-gap: 12px;
-width: 100%;
-max-width: 900px;
-}
-
-.ctrl-card {
-border: 1px solid var(–border);
-padding: 14px 18px;
-background: var(–panel);
-}
-
-.ctrl-title {
-font-family: ‘Bebas Neue’, sans-serif;
-font-size: 18px;
-letter-spacing: 2px;
-margin-bottom: 8px;
-}
-
-.ctrl-card:first-child .ctrl-title { color: var(–p1); }
-.ctrl-card:last-child .ctrl-title { color: var(–p2); }
-
-.ctrl-row {
-display: flex;
-justify-content: space-between;
-align-items: center;
-padding: 4px 0;
-border-bottom: 1px solid rgba(255,255,255,0.04);
-font-size: 14px;
-}
-
-kbd {
-font-family: ‘Share Tech Mono’, monospace;
-background: rgba(255,255,255,0.1);
-border: 1px solid rgba(255,255,255,0.2);
-padding: 2px 8px;
-font-size: 12px;
-color: var(–gold);
-}
-
-/* === HOW TO PLAY === */
-#page-how {
-max-width: 860px;
-margin: 0 auto;
-padding: 40px 20px;
-}
-
-.section-title {
-font-family: ‘Bebas Neue’, sans-serif;
-font-size: 42px;
-letter-spacing: 4px;
-color: var(–gold);
-border-bottom: 2px solid var(–border);
-padding-bottom: 12px;
-margin-bottom: 24px;
-}
-
-.rules-grid {
-display: grid;
-grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-gap: 16px;
-margin-bottom: 40px;
-}
-
-.rule-card {
-background: var(–panel);
-border: 1px solid var(–border);
-padding: 24px;
-position: relative;
-overflow: hidden;
-transition: border-color 0.2s;
-}
-
-.rule-card:hover { border-color: var(–gold); }
-
-.rule-num {
-font-family: ‘Bebas Neue’, sans-serif;
-font-size: 64px;
-color: rgba(255,215,0,0.1);
-position: absolute;
-top: -8px;
-right: 10px;
-line-height: 1;
-}
-
-.rule-icon {
-font-size: 28px;
-margin-bottom: 12px;
-}
-
-.rule-title {
-font-family: ‘Bebas Neue’, sans-serif;
-font-size: 20px;
-letter-spacing: 2px;
-color: var(–gold);
-margin-bottom: 8px;
-}
-
-.rule-desc {
-font-size: 15px;
-color: #aab;
-line-height: 1.6;
-}
-
-/* Power-ups table */
-.powerup-list {
-display: grid;
 gap: 10px;
-margin-bottom: 40px;
+width: 100%;
+max-width: 960px;
 }
 
-.powerup-row {
-display: flex;
-align-items: center;
-gap: 16px;
+.ctrl {
 background: var(–panel);
 border: 1px solid var(–border);
-padding: 14px 18px;
-transition: border-color 0.2s;
+padding: 10px 16px;
+display: flex;
+align-items: center;
+gap: 12px;
 }
 
-.powerup-row:hover { border-color: var(–p2); }
-
-.powerup-icon {
-font-size: 28px;
-width: 44px;
-text-align: center;
-flex-shrink: 0;
-}
-
-.powerup-name {
-font-family: ‘Bebas Neue’, sans-serif;
-font-size: 18px;
-letter-spacing: 2px;
-color: var(–p2);
-width: 160px;
-flex-shrink: 0;
-}
-
-.powerup-desc {
-font-size: 14px;
-color: #aab;
-line-height: 1.5;
-}
-
-/* === LEADERBOARD === */
-#page-scores {
-max-width: 700px;
-margin: 0 auto;
-padding: 40px 20px;
-}
-
-.leaderboard {
-border: 1px solid var(–border);
-overflow: hidden;
-}
-
-.lb-header {
-display: grid;
-grid-template-columns: 60px 1fr 1fr 100px;
-background: rgba(255,215,0,0.1);
-border-bottom: 1px solid var(–border);
-padding: 12px 18px;
+.ctrl-label {
 font-family: ‘Bebas Neue’, sans-serif;
 font-size: 16px;
 letter-spacing: 2px;
-color: var(–gold);
+white-space: nowrap;
 }
 
-.lb-row {
-display: grid;
-grid-template-columns: 60px 1fr 1fr 100px;
-padding: 14px 18px;
-border-bottom: 1px solid rgba(255,255,255,0.04);
-font-size: 15px;
-transition: background 0.2s;
-align-items: center;
-}
+.ctrl:first-child .ctrl-label { color: var(–red); }
+.ctrl:last-child .ctrl-label { color: var(–blue); }
 
-.lb-row:hover { background: rgba(255,255,255,0.03); }
-
-.lb-rank {
-font-family: ‘Bebas Neue’, sans-serif;
-font-size: 22px;
-color: var(–muted);
-}
-
-.lb-rank.gold { color: var(–gold); }
-.lb-rank.silver { color: #c0c0c0; }
-.lb-rank.bronze { color: #cd7f32; }
-
-.lb-winner { font-weight: 700; color: var(–text); }
-.lb-loser { color: var(–muted); }
-
-.lb-wins {
-font-family: ‘Bebas Neue’, sans-serif;
-font-size: 24px;
-color: var(–green);
-text-align: right;
-}
-
-.no-scores {
-text-align: center;
-padding: 60px 20px;
-color: var(–muted);
-font-family: ‘Share Tech Mono’, monospace;
-font-size: 14px;
-letter-spacing: 2px;
-}
-
-.btn-clear {
-font-family: ‘Barlow Condensed’, sans-serif;
-font-weight: 700;
-letter-spacing: 2px;
-text-transform: uppercase;
-background: transparent;
-border: 1px solid var(–p1);
-color: var(–p1);
-padding: 10px 24px;
-cursor: pointer;
-transition: all 0.2s;
-margin-top: 16px;
-font-size: 14px;
-}
-
-.btn-clear:hover { background: var(–p1); color: white; }
-
-/* Win announcement */
-.win-p1 { color: var(–p1); text-shadow: 0 0 40px rgba(255,68,68,0.8); }
-.win-p2 { color: var(–p2); text-shadow: 0 0 40px rgba(68,170,255,0.8); }
-.win-tie { color: var(–gold); text-shadow: 0 0 40px rgba(255,215,0,0.8); }
-
-/* Particle canvas */
-#particle-canvas {
-position: fixed;
-inset: 0;
-pointer-events: none;
-z-index: 0;
-}
-
-/* Footer */
-footer {
-position: relative;
-z-index: 10;
-text-align: center;
-padding: 30px 20px;
-border-top: 1px solid var(–border);
+.ctrl-keys {
 font-family: ‘Share Tech Mono’, monospace;
 font-size: 12px;
 color: var(–muted);
-letter-spacing: 2px;
-margin-top: 40px;
 }
 
-/* Scanline effect */
-.scanlines {
-position: fixed;
-inset: 0;
-pointer-events: none;
-z-index: 999;
-background: repeating-linear-gradient(
-0deg,
-transparent,
-transparent 2px,
-rgba(0,0,0,0.03) 2px,
-rgba(0,0,0,0.03) 4px
-);
+kbd {
+display: inline-block;
+background: rgba(255,255,255,0.08);
+border: 1px solid rgba(255,255,255,0.15);
+padding: 1px 6px;
+font-family: ‘Share Tech Mono’, monospace;
+font-size: 11px;
+color: var(–gold);
+margin: 0 1px;
 }
+
+.game-frame-wrap {
+width: 100%;
+max-width: 960px;
+border: 2px solid var(–border);
+position: relative;
+background: #000;
+box-shadow: 0 0 60px rgba(255,68,68,0.1), 0 0 60px rgba(68,170,255,0.1);
+}
+
+.game-frame-wrap::before {
+content: ‘’;
+position: absolute;
+top: -2px; bottom: -2px;
+left: -2px;
+width: 2px;
+background: linear-gradient(180deg, var(–red), transparent);
+z-index: 1;
+}
+
+iframe {
+display: block;
+width: 100%;
+height: 600px;
+border: none;
+}
+
+.bottom-bar {
+width: 100%;
+max-width: 960px;
+display: flex;
+justify-content: space-between;
+align-items: center;
+padding: 10px 0;
+border-top: 1px solid var(–border);
+font-family: ‘Share Tech Mono’, monospace;
+font-size: 11px;
+color: var(–muted);
+letter-spacing: 2px;
+}
+
+.open-link {
+color: var(–gold);
+text-decoration: none;
+letter-spacing: 2px;
+font-size: 11px;
+transition: color 0.2s;
+}
+.open-link:hover { color: white; }
 
 @media (max-width: 600px) {
-.controls-grid { grid-template-columns: 1fr; }
-.lb-header, .lb-row { grid-template-columns: 50px 1fr 80px; }
-.lb-row > :nth-child(3), .lb-header > :nth-child(3) { display: none; }
+header { padding: 12px 16px; }
+.header-tag { display: none; }
+.controls-bar { grid-template-columns: 1fr; }
+iframe { height: 400px; }
 }
 </style>
 
 </head>
 <body>
-<div class="scanlines"></div>
-<canvas id="particle-canvas"></canvas>
 
 <header>
-<div class="site-logo">GETAWAY<br>SHOOTOUT</div>
-<div class="site-tagline">// 2 PLAYER ARCADE BATTLE //</div>
-<nav>
-<button class="active" onclick="showPage('game', this)">▶ PLAY</button>
-<button onclick="showPage('how', this)">📖 HOW TO PLAY</button>
-<button onclick="showPage('scores', this)">🏆 LEADERBOARD</button>
-</nav>
+<div class="logo">GETAWAY SHOOTOUT</div>
+<div class="header-tag">// 2-PLAYER LOCAL BATTLE //</div>
+<div class="badge">🔴 VS 🔵</div>
 </header>
 
-<!-- ===== GAME PAGE ===== -->
-
-<div id="page-game" class="page active">
-<div class="player-hud">
-<div class="player-card p1">
-<div class="player-name">🔴 PLAYER 1</div>
-<div class="player-score" id="score1">0</div>
-<div class="player-keys">W/A/D — MOVE &amp; JUMP</div>
-</div>
-<div class="round-display">
-<div class="round-label">ROUND</div>
-<div class="round-num" id="round-num">1</div>
-<div class="round-label">OF 5</div>
-</div>
-<div class="player-card p2">
-<div class="player-name">🔵 PLAYER 2</div>
-<div class="player-score" id="score2">0</div>
-<div class="player-keys">↑/←/→ — MOVE &amp; JUMP</div>
+<main>
+<div class="controls-bar">
+<div class="ctrl">
+<div class="ctrl-label">🔴 Player 1</div>
+<div class="ctrl-keys">
+Move: <kbd>W</kbd><kbd>E</kbd> &nbsp; Power-up: <kbd>R</kbd>
 </div>
 </div>
-
-<div class="timer-bar-wrap">
-<div class="timer-bar" id="timer-bar"></div>
-</div>
-
-<div class="canvas-wrap">
-<canvas id="gameCanvas" width="900" height="420"></canvas>
-<div class="canvas-overlay" id="overlay">
-<div class="overlay-title" id="overlay-title">GETAWAY<br>SHOOTOUT</div>
-<div class="overlay-sub" id="overlay-sub">
-REACH THE HELICOPTER TO WIN THE ROUND<br>
-SHOOT OPPONENTS TO SLOW THEM DOWN<br>
-BEST OF 5 ROUNDS WINS
-</div>
-<button class="btn-start" onclick="startGame()">START GAME</button>
-</div>
-</div>
-
-<div class="controls-grid">
-<div class="ctrl-card">
-<div class="ctrl-title">🔴 Player 1 Controls</div>
-<div class="ctrl-row"><span>Move Left</span><kbd>A</kbd></div>
-<div class="ctrl-row"><span>Move Right</span><kbd>D</kbd></div>
-<div class="ctrl-row"><span>Jump / Double Jump</span><kbd>W</kbd></div>
-<div class="ctrl-row"><span>Shoot</span><kbd>F</kbd></div>
-</div>
-<div class="ctrl-card">
-<div class="ctrl-title">🔵 Player 2 Controls</div>
-<div class="ctrl-row"><span>Move Left</span><kbd>←</kbd></div>
-<div class="ctrl-row"><span>Move Right</span><kbd>→</kbd></div>
-<div class="ctrl-row"><span>Jump / Double Jump</span><kbd>↑</kbd></div>
-<div class="ctrl-row"><span>Shoot</span><kbd>/</kbd></div>
+<div class="ctrl">
+<div class="ctrl-label">🔵 Player 2</div>
+<div class="ctrl-keys">
+Move: <kbd>I</kbd><kbd>O</kbd> &nbsp; Power-up: <kbd>P</kbd>
 </div>
 </div>
 </div>
 
-<!-- ===== HOW TO PLAY ===== -->
-
-<div id="page-how" class="page">
-<div class="section-title">HOW TO PLAY</div>
-<div class="rules-grid">
-<div class="rule-card">
-<div class="rule-num">1</div>
-<div class="rule-icon">🏁</div>
-<div class="rule-title">Race to the Chopper</div>
-<div class="rule-desc">A helicopter waits at the far right of each stage. Sprint, jump, and claw your way to it before your opponent to win the round.</div>
-</div>
-<div class="rule-card">
-<div class="rule-num">2</div>
-<div class="rule-icon">🔫</div>
-<div class="rule-title">Shoot to Stun</div>
-<div class="rule-desc">Pick up weapons scattered across the level. Shooting your opponent knocks them back and briefly stuns them — use it to take the lead.</div>
-</div>
-<div class="rule-card">
-<div class="rule-num">3</div>
-<div class="rule-icon">⚡</div>
-<div class="rule-title">Grab Power-Ups</div>
-<div class="rule-desc">Glowing pickups drop throughout each round. Speed boosts, shields, and weapons give you a crucial edge in the dash to escape.</div>
-</div>
-<div class="rule-card">
-<div class="rule-num">4</div>
-<div class="rule-icon">🏆</div>
-<div class="rule-title">Best of 5</div>
-<div class="rule-desc">First player to win 3 rounds takes the match. Scores are tracked across rounds. Check the leaderboard to see all-time winners.</div>
-</div>
-<div class="rule-card">
-<div class="rule-num">5</div>
-<div class="rule-icon">💀</div>
-<div class="rule-title">Fall = Lose Round</div>
-<div class="rule-desc">Fall into the void below the platforms and you lose that round instantly. Platform gaps are deadly — mind your jumps!</div>
-</div>
-<div class="rule-card">
-<div class="rule-num">6</div>
-<div class="rule-icon">⏱️</div>
-<div class="rule-title">Beat the Clock</div>
-<div class="rule-desc">Each round has a time limit. If neither player reaches the chopper in time, the round goes to whoever is furthest right on the map.</div>
-</div>
+<div class="game-frame-wrap">
+<iframe
+src="https://getawayshootoutonline.github.io/"
+width="800"
+height="600"
+frameborder="0"
+allowfullscreen
+title="Getaway Shootout">
+</iframe>
 </div>
 
-<div class="section-title">POWER-UPS</div>
-<div class="powerup-list">
-<div class="powerup-row">
-<div class="powerup-icon">⚡</div>
-<div class="powerup-name">SPEED BOOST</div>
-<div class="powerup-desc">Doubles your movement speed for 5 seconds. Perfect for dashing ahead when the path is clear.</div>
+<div class="bottom-bar">
+<span>// CLICK INSIDE THE GAME FIRST TO ENABLE KEYBOARD INPUT //</span>
+<a class="open-link" href="https://getawayshootoutonline.github.io/" target="_blank">↗ OPEN FULL SITE</a>
 </div>
-<div class="powerup-row">
-<div class="powerup-icon">🛡️</div>
-<div class="powerup-name">SHIELD</div>
-<div class="powerup-desc">Blocks the next bullet hit. Visual glow shows when shield is active. Essential in tight corridors.</div>
-</div>
-<div class="powerup-row">
-<div class="powerup-icon">🔫</div>
-<div class="powerup-name">GUN</div>
-<div class="powerup-desc">Grants one shot. Fire it directly at your opponent to knock them back and steal precious ground.</div>
-</div>
-<div class="powerup-row">
-<div class="powerup-icon">🦅</div>
-<div class="powerup-name">TRIPLE JUMP</div>
-<div class="powerup-desc">Temporarily allows a third mid-air jump. Reach higher platforms and shortcuts your opponent can't.</div>
-</div>
-<div class="powerup-row">
-<div class="powerup-icon">💣</div>
-<div class="powerup-name">GRENADE</div>
-<div class="powerup-desc">Lobs a bouncing explosive. Wide blast radius can stun your opponent even around corners.</div>
-</div>
-</div>
-</div>
-
-<!-- ===== LEADERBOARD ===== -->
-
-<div id="page-scores" class="page">
-<div class="section-title">LEADERBOARD</div>
-<div class="leaderboard">
-<div class="lb-header">
-<div>RANK</div>
-<div>WINNER</div>
-<div>LOSER</div>
-<div style="text-align:right">WINS</div>
-</div>
-<div id="lb-body">
-<div class="no-scores">// NO MATCHES PLAYED YET //<br>START A GAME TO RECORD YOUR VICTORY</div>
-</div>
-</div>
-<button class="btn-clear" onclick="clearScores()">🗑 CLEAR SCORES</button>
-</div>
-
-<footer>// GETAWAY SHOOTOUT — 2-PLAYER LOCAL ARCADE //&nbsp;&nbsp;MADE WITH JAVASCRIPT CANVAS //</footer>
-
-<script>
-// =====================================================
-// PARTICLE BACKGROUND
-// =====================================================
-(function() {
-const c = document.getElementById('particle-canvas');
-const ctx = c.getContext('2d');
-let W, H, particles = [];
-
-function resize() {
-W = c.width = window.innerWidth;
-H = c.height = window.innerHeight;
-}
-
-resize();
-window.addEventListener('resize', resize);
-
-for (let i = 0; i < 60; i++) {
-particles.push({
-x: Math.random() * 1920,
-y: Math.random() * 1080,
-vx: (Math.random() - 0.5) * 0.3,
-vy: -Math.random() * 0.4 - 0.1,
-size: Math.random() * 2 + 0.5,
-color: Math.random() > 0.5 ? '#ff4444' : '#44aaff',
-alpha: Math.random() * 0.4 + 0.1
-});
-}
-
-function tick() {
-ctx.clearRect(0, 0, W, H);
-particles.forEach(p => {
-p.x += p.vx;
-p.y += p.vy;
-if (p.y < -10) p.y = H + 10;
-if (p.x < -10) p.x = W + 10;
-if (p.x > W + 10) p.x = -10;
-ctx.globalAlpha = p.alpha;
-ctx.fillStyle = p.color;
-ctx.beginPath();
-ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-ctx.fill();
-});
-ctx.globalAlpha = 1;
-requestAnimationFrame(tick);
-}
-tick();
-})();
-
-// =====================================================
-// NAV
-// =====================================================
-function showPage(id, btn) {
-document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
-document.getElementById('page-' + id).classList.add('active');
-if (btn) btn.classList.add('active');
-if (id === 'scores') renderLeaderboard();
-}
-
-// =====================================================
-// GAME ENGINE
-// =====================================================
-const canvas = document.getElementById('gameCanvas');
-const ctx2 = canvas.getContext('2d');
-const W = 900, H = 420;
-
-const GRAVITY = 0.55;
-const PLAYER_SPEED = 3.8;
-const JUMP_FORCE = -13;
-const ROUND_TIME = 45; // seconds
-const MAX_ROUNDS = 5;
-const WIN_ROUNDS = 3;
-
-let gameState = 'idle'; // idle, playing, roundEnd, gameOver
-let round = 1;
-let scores = [0, 0];
-let roundTimer = ROUND_TIME;
-let timerInterval = null;
-let animFrame = null;
-let roundWinner = null;
-
-// Platform layouts per round (x, y, w, h)
-const LEVEL_SETS = [
-// Level 1
-[
-{x:0, y:380, w:200, h:40},
-{x:240, y:340, w:140, h:20},
-{x:430, y:300, w:120, h:20},
-{x:600, y:260, w:140, h:20},
-{x:790, y:220, w:110, h:20},
-],
-// Level 2
-[
-{x:0, y:380, w:180, h:40},
-{x:220, y:320, w:120, h:20},
-{x:390, y:280, w:100, h:20},
-{x:540, y:340, w:130, h:20},
-{x:720, y:260, w:180, h:20},
-],
-// Level 3
-[
-{x:0, y:380, w:160, h:40},
-{x:210, y:300, w:120, h:20},
-{x:380, y:350, w:80, h:20},
-{x:510, y:280, w:120, h:20},
-{x:680, y:320, w:100, h:20},
-{x:820, y:240, w:80, h:20},
-],
-// Level 4
-[
-{x:0, y:380, w:150, h:40},
-{x:200, y:330, w:100, h:20},
-{x:350, y:270, w:130, h:20},
-{x:530, y:310, w:90, h:20},
-{x:670, y:250, w:130, h:20},
-{x:840, y:200, w:60, h:20},
-],
-// Level 5 — hardest
-[
-{x:0, y:380, w:140, h:40},
-{x:190, y:310, w:90, h:20},
-{x:330, y:260, w:80, h:20},
-{x:460, y:320, w:70, h:20},
-{x:580, y:270, w:100, h:20},
-{x:730, y:220, w:90, h:20},
-{x:860, y:170, w:40, h:20},
-]
-];
-
-let platforms = [];
-let helicopter = { x: 845, y: 100, w: 80, h: 60, bladeAngle: 0 };
-let bullets = [];
-let powerups = [];
-let particles_game = [];
-let powerupSpawnTimer = 0;
-
-// Players
-function makePlayer(n) {
-return {
-id: n,
-x: n === 0 ? 40 : 100,
-y: 300,
-w: 28, h: 36,
-vx: 0, vy: 0,
-onGround: false,
-jumpsLeft: 2,
-color: n === 0 ? '#ff4444' : '#44aaff',
-dark: n === 0 ? '#aa1111' : '#1166bb',
-facing: 1,
-stunTimer: 0,
-hasGun: false,
-hasShield: false,
-shieldTimer: 0,
-speedBoost: 0,
-tripleJump: false,
-tripleJumpsLeft: 0,
-score: 0,
-alive: true,
-shootCooldown: 0,
-animFrame: 0,
-animTimer: 0,
-// Shooting direction
-aimAngle: 0,
-};
-}
-
-let players = [makePlayer(0), makePlayer(1)];
-
-// Input
-const keys = {};
-window.addEventListener('keydown', e => { keys[e.code] = true; e.preventDefault && e.key !== 'F5' && e.key !== 'F12' && e.preventDefault(); });
-window.addEventListener('keyup', e => { keys[e.code] = false; });
-
-function startGame() {
-scores = [0, 0];
-round = 1;
-document.getElementById('score1').textContent = '0';
-document.getElementById('score2').textContent = '0';
-document.getElementById('round-num').textContent = '1';
-startRound();
-}
-
-function startRound() {
-gameState = 'playing';
-document.getElementById('overlay').classList.add('hidden');
-roundTimer = ROUND_TIME;
-bullets = [];
-powerups = [];
-particles_game = [];
-powerupSpawnTimer = 60;
-
-const lvl = LEVEL_SETS[(round - 1) % LEVEL_SETS.length];
-platforms = lvl.map(p => ({ ...p }));
-
-const startY = platforms[0].y - 36;
-players = [makePlayer(0), makePlayer(1)];
-players[0].x = 30; players[0].y = startY;
-players[1].x = 90; players[1].y = startY;
-
-helicopter = {
-x: W - 90,
-y: platforms[platforms.length - 1].y - 100,
-w: 80, h: 60, bladeAngle: 0,
-landing: false, landTimer: 0
-};
-
-if (timerInterval) clearInterval(timerInterval);
-timerInterval = setInterval(tickTimer, 1000);
-if (animFrame) cancelAnimationFrame(animFrame);
-loop();
-}
-
-function tickTimer() {
-if (gameState !== 'playing') return;
-roundTimer--;
-updateTimerBar();
-if (roundTimer <= 0) {
-// Winner is furthest right alive player
-const p0 = players[0].alive ? players[0].x : -999;
-const p1 = players[1].alive ? players[1].x : -999;
-endRound(p0 >= p1 ? 0 : 1, true);
-}
-}
-
-function updateTimerBar() {
-document.getElementById('timer-bar').style.width = (roundTimer / ROUND_TIME * 100) + '%';
-}
-
-function endRound(winnerIdx, timeout) {
-if (gameState !== 'playing') return;
-gameState = 'roundEnd';
-clearInterval(timerInterval);
-scores[winnerIdx]++;
-document.getElementById('score1').textContent = scores[0];
-document.getElementById('score2').textContent = scores[1];
-
-spawnVictoryParticles(winnerIdx);
-
-setTimeout(() => {
-if (scores[0] >= WIN_ROUNDS || scores[1] >= WIN_ROUNDS || round >= MAX_ROUNDS) {
-endGame();
-} else {
-round++;
-document.getElementById('round-num').textContent = round;
-showRoundOverlay(winnerIdx, false);
-setTimeout(startRound, 2200);
-}
-}, timeout ? 1200 : 1800);
-}
-
-function endGame() {
-gameState = 'gameOver';
-let winnerIdx = scores[0] > scores[1] ? 0 : scores[1] > scores[0] ? 1 : -1;
-saveScore(winnerIdx);
-
-const overlay = document.getElementById('overlay');
-const title = document.getElementById('overlay-title');
-const sub = document.getElementById('overlay-sub');
-const btn = overlay.querySelector('.btn-start');
-
-overlay.classList.remove('hidden');
-
-if (winnerIdx === -1) {
-title.innerHTML = `<span class="win-tie">IT'S A TIE!</span>`;
-sub.textContent = `BOTH PLAYERS SCORED ${scores[0]} WINS`;
-} else {
-const cls = winnerIdx === 0 ? 'win-p1' : 'win-p2';
-const name = winnerIdx === 0 ? 'PLAYER 1' : 'PLAYER 2';
-title.innerHTML = `<span class="${cls}">${name}<br>WINS!</span>`;
-sub.textContent = `FINAL SCORE: ${scores[0]} — ${scores[1]}`;
-}
-btn.textContent = 'PLAY AGAIN';
-btn.onclick = startGame;
-}
-
-function showRoundOverlay(winnerIdx, gameOver) {
-const overlay = document.getElementById('overlay');
-const title = document.getElementById('overlay-title');
-const sub = document.getElementById('overlay-sub');
-
-overlay.classList.remove('hidden');
-const cls = winnerIdx === 0 ? 'win-p1' : 'win-p2';
-const name = winnerIdx === 0 ? 'PLAYER 1' : 'PLAYER 2';
-title.innerHTML = `<span class="${cls}">${name}<br>TOOK ROUND ${round - 1}!</span>`;
-sub.textContent = `SCORE: ${scores[0]} — ${scores[1]}`;
-overlay.querySelector('.btn-start').style.display = 'none';
-
-setTimeout(() => {
-overlay.classList.add('hidden');
-overlay.querySelector('.btn-start').style.display = '';
-}, 2000);
-}
-
-// =====================================================
-// GAME LOOP
-// =====================================================
-function loop() {
-if (gameState !== 'playing' && gameState !== 'roundEnd') return;
-update();
-draw();
-animFrame = requestAnimationFrame(loop);
-}
-
-function update() {
-if (gameState !== 'playing') return;
-
-// Power-up spawning
-powerupSpawnTimer--;
-if (powerupSpawnTimer <= 0) {
-spawnPowerup();
-powerupSpawnTimer = 180 + Math.random() * 120;
-}
-
-players.forEach((p, i) => {
-if (!p.alive) return;
-
-// Timers
-if (p.stunTimer > 0) p.stunTimer--;
-if (p.shieldTimer > 0) { p.shieldTimer--; if (p.shieldTimer <= 0) p.hasShield = false; }
-if (p.speedBoost > 0) p.speedBoost--;
-if (p.shootCooldown > 0) p.shootCooldown--;
-
-if (p.stunTimer > 0) return; // stunned = no input
-
-const spd = PLAYER_SPEED * (p.speedBoost > 0 ? 1.9 : 1);
-
-// Input
-if (i === 0) {
-if (keys['KeyA']) { p.vx = -spd; p.facing = -1; }
-else if (keys['KeyD']) { p.vx = spd; p.facing = 1; }
-else p.vx = 0;
-
-if (keys['KeyW']) { tryJump(p); }
-if (keys['KeyF'] && p.hasGun && p.shootCooldown <= 0) shoot(p);
-} else {
-if (keys['ArrowLeft']) { p.vx = -spd; p.facing = -1; }
-else if (keys['ArrowRight']) { p.vx = spd; p.facing = 1; }
-else p.vx = 0;
-
-if (keys['ArrowUp']) { tryJump(p); }
-if (keys['Slash'] && p.hasGun && p.shootCooldown <= 0) shoot(p);
-}
-
-// Physics
-p.vy += GRAVITY;
-p.x += p.vx;
-p.y += p.vy;
-
-// Platform collision
-p.onGround = false;
-platforms.forEach(pl => {
-if (p.vy >= 0 &&
-p.x + p.w > pl.x && p.x < pl.x + pl.w &&
-p.y + p.h >= pl.y && p.y + p.h <= pl.y + pl.h + p.vy + 2) {
-p.y = pl.y - p.h;
-p.vy = 0;
-p.onGround = true;
-p.jumpsLeft = p.tripleJump ? 3 : 2;
-}
-});
-
-// Side walls
-if (p.x < 0) p.x = 0;
-if (p.x + p.w > W) p.x = W - p.w;
-
-// Fall off screen
-if (p.y > H + 60) {
-p.alive = false;
-spawnFallParticles(p);
-// Award other player
-const other = 1 - i;
-if (players[other].alive) endRound(other, false);
-else endRound(i, false); // both fell, whoever was alive last
-}
-
-// Reach helicopter
-if (p.x + p.w > helicopter.x && p.x < helicopter.x + helicopter.w &&
-p.y + p.h > helicopter.y && p.y < helicopter.y + helicopter.h) {
-endRound(i, false);
-}
-
-// Anim
-p.animTimer++;
-if (p.animTimer > 8) { p.animTimer = 0; p.animFrame = (p.animFrame + 1) % 4; }
-});
-
-// Bullets
-bullets = bullets.filter(b => {
-b.x += b.vx;
-b.y += b.vy;
-b.life--;
-
-// Hit players
-players.forEach((p, i) => {
-if (!p.alive || b.owner === i) return;
-if (b.x > p.x && b.x < p.x + p.w && b.y > p.y && b.y < p.y + p.h) {
-if (p.hasShield) { p.hasShield = false; p.shieldTimer = 0; b.life = 0; return; }
-p.stunTimer = 50;
-p.vx = b.vx > 0 ? 8 : -8;
-p.vy = -6;
-b.life = 0;
-spawnHitParticles(b.x, b.y);
-}
-});
-
-return b.life > 0 && b.x > 0 && b.x < W;
-});
-
-// Powerup collision
-powerups = powerups.filter(pu => {
-players.forEach((p, i) => {
-if (!p.alive) return;
-if (p.x < pu.x + pu.w && p.x + p.w > pu.x && p.y < pu.y + pu.h && p.y + p.h > pu.y) {
-applyPowerup(p, pu.type);
-pu.collected = true;
-spawnCollectParticles(pu.x, pu.y);
-}
-});
-return !pu.collected;
-});
-
-// Helicopter blade
-helicopter.bladeAngle += 0.2;
-
-// Particles
-particles_game = particles_game.filter(p => {
-p.x += p.vx; p.y += p.vy; p.vy += 0.15; p.life--;
-p.alpha = p.life / p.maxLife;
-return p.life > 0;
-});
-}
-
-let jumpKeyDown0 = false, jumpKeyDown1 = false;
-function tryJump(p) {
-const idx = players.indexOf(p);
-const keyFlag = idx === 0 ? 'jk0' : 'jk1';
-
-if (!p[keyFlag + 'prev']) {
-if (p.jumpsLeft > 0) {
-p.vy = JUMP_FORCE;
-p.jumpsLeft--;
-p.onGround = false;
-spawnJumpParticles(p);
-}
-p[keyFlag + 'prev'] = true;
-}
-}
-
-// Clear jump repeat
-setInterval(() => {
-if (!keys['KeyW']) players[0]['jk0prev'] = false;
-if (!keys['ArrowUp']) players[1]['jk1prev'] = false;
-}, 50);
-
-function shoot(p) {
-if (!p.hasGun) return;
-p.hasGun = false;
-p.shootCooldown = 30;
-bullets.push({
-x: p.x + (p.facing > 0 ? p.w : 0),
-y: p.y + p.h / 2,
-vx: p.facing * 9,
-vy: -1,
-owner: players.indexOf(p),
-life: 80,
-color: p.color
-});
-}
-
-function spawnPowerup() {
-const types = ['gun', 'gun', 'speed', 'shield', 'triplejump'];
-const type = types[Math.floor(Math.random() * types.length)];
-// Pick a platform to place it on
-const pl = platforms[Math.floor(Math.random() * platforms.length)];
-powerups.push({
-x: pl.x + pl.w / 2 - 12,
-y: pl.y - 28,
-w: 24, h: 24,
-type,
-collected: false,
-bob: Math.random() * Math.PI * 2
-});
-}
-
-function applyPowerup(p, type) {
-if (type === 'gun') p.hasGun = true;
-if (type === 'speed') p.speedBoost = 300;
-if (type === 'shield') { p.hasShield = true; p.shieldTimer = 400; }
-if (type === 'triplejump') { p.tripleJump = true; p.jumpsLeft = Math.max(p.jumpsLeft, 3); setTimeout(() => { p.tripleJump = false; }, 8000); }
-}
-
-// Particle helpers
-function spawnVictoryParticles(winnerIdx) {
-const p = players[winnerIdx];
-for (let i = 0; i < 30; i++) {
-particles_game.push({
-x: p.x + p.w / 2, y: p.y,
-vx: (Math.random() - 0.5) * 6,
-vy: -Math.random() * 8 - 2,
-color: p.color, size: 4, life: 60, maxLife: 60, alpha: 1
-});
-}
-}
-
-function spawnFallParticles(p) {
-for (let i = 0; i < 20; i++) {
-particles_game.push({
-x: p.x + p.w / 2, y: H - 20,
-vx: (Math.random() - 0.5) * 4, vy: -Math.random() * 5,
-color: p.color, size: 3, life: 40, maxLife: 40, alpha: 1
-});
-}
-}
-
-function spawnHitParticles(x, y) {
-for (let i = 0; i < 12; i++) {
-particles_game.push({
-x, y,
-vx: (Math.random() - 0.5) * 5,
-vy: (Math.random() - 0.5) * 5,
-color: '#ffdd44', size: 3, life: 25, maxLife: 25, alpha: 1
-});
-}
-}
-
-function spawnCollectParticles(x, y) {
-for (let i = 0; i < 10; i++) {
-particles_game.push({
-x: x + 12, y: y + 12,
-vx: (Math.random() - 0.5) * 4,
-vy: -Math.random() * 4 - 1,
-color: '#44ff88', size: 3, life: 30, maxLife: 30, alpha: 1
-});
-}
-}
-
-function spawnJumpParticles(p) {
-for (let i = 0; i < 5; i++) {
-particles_game.push({
-x: p.x + Math.random() * p.w,
-y: p.y + p.h,
-vx: (Math.random() - 0.5) * 2,
-vy: Math.random() * 2 + 0.5,
-color: p.color, size: 2, life: 20, maxLife: 20, alpha: 0.7
-});
-}
-}
-
-// =====================================================
-// DRAW
-// =====================================================
-function draw() {
-// Background
-ctx2.fillStyle = '#0d1117';
-ctx2.fillRect(0, 0, W, H);
-
-// Atmospheric gradient
-const grad = ctx2.createLinearGradient(0, 0, W, H);
-grad.addColorStop(0, 'rgba(255,68,68,0.06)');
-grad.addColorStop(0.5, 'rgba(0,0,0,0)');
-grad.addColorStop(1, 'rgba(68,170,255,0.06)');
-ctx2.fillStyle = grad;
-ctx2.fillRect(0, 0, W, H);
-
-// Stars
-ctx2.fillStyle = 'rgba(255,255,255,0.3)';
-for (let i = 0; i < 40; i++) {
-const sx = (i * 127 + round * 13) % W;
-const sy = (i * 83) % (H * 0.6);
-ctx2.fillRect(sx, sy, 1, 1);
-}
-
-// Ground danger zone
-ctx2.fillStyle = 'rgba(255,68,68,0.06)';
-ctx2.fillRect(0, H - 30, W, 30);
-for (let x = 0; x < W; x += 20) {
-ctx2.fillStyle = (Math.floor(x / 20) % 2 === 0) ? 'rgba(255,68,68,0.15)' : 'transparent';
-ctx2.fillRect(x, H - 30, 20, 30);
-}
-
-// Platforms
-platforms.forEach(pl => {
-// Shadow
-ctx2.fillStyle = 'rgba(0,0,0,0.4)';
-ctx2.fillRect(pl.x + 4, pl.y + 4, pl.w, pl.h);
-
-// Main
-const pg = ctx2.createLinearGradient(pl.x, pl.y, pl.x, pl.y + pl.h);
-pg.addColorStop(0, '#2a3a50');
-pg.addColorStop(1, '#1a2535');
-ctx2.fillStyle = pg;
-ctx2.fillRect(pl.x, pl.y, pl.w, pl.h);
-
-// Top edge glow
-ctx2.fillStyle = '#3a5a80';
-ctx2.fillRect(pl.x, pl.y, pl.w, 3);
-
-// Rivets
-ctx2.fillStyle = '#4a6a90';
-for (let rx = pl.x + 8; rx < pl.x + pl.w - 4; rx += 16) {
-ctx2.beginPath();
-ctx2.arc(rx, pl.y + 10, 2, 0, Math.PI * 2);
-ctx2.fill();
-}
-});
-
-// Power-ups
-const t = Date.now() / 1000;
-powerups.forEach(pu => {
-pu.bob = (pu.bob || 0);
-const bob = Math.sin(t * 2 + pu.bob) * 4;
-
-// Glow
-ctx2.shadowBlur = 15;
-ctx2.shadowColor = '#44ff88';
-
-ctx2.save();
-ctx2.translate(pu.x + 12, pu.y + 12 + bob);
-
-// Outer ring
-ctx2.strokeStyle = 'rgba(68,255,136,0.5)';
-ctx2.lineWidth = 1.5;
-ctx2.beginPath();
-ctx2.arc(0, 0, 14 + Math.sin(t * 3) * 2, 0, Math.PI * 2);
-ctx2.stroke();
-
-// Icon background
-ctx2.fillStyle = 'rgba(0,0,0,0.7)';
-ctx2.beginPath();
-ctx2.arc(0, 0, 11, 0, Math.PI * 2);
-ctx2.fill();
-
-const icons = { gun: '🔫', speed: '⚡', shield: '🛡️', triplejump: '🦅' };
-ctx2.font = '14px serif';
-ctx2.textAlign = 'center';
-ctx2.textBaseline = 'middle';
-ctx2.fillText(icons[pu.type] || '?', 0, 1);
-
-ctx2.restore();
-ctx2.shadowBlur = 0;
-});
-
-// Helicopter
-const hx = helicopter.x, hy = helicopter.y;
-// Glow
-ctx2.shadowBlur = 20;
-ctx2.shadowColor = '#ffd700';
-
-// Body
-ctx2.fillStyle = '#3a5a3a';
-ctx2.beginPath();
-ctx2.roundRect(hx, hy + 20, 80, 30, 6);
-ctx2.fill();
-
-// Cockpit
-ctx2.fillStyle = '#88ddff';
-ctx2.globalAlpha = 0.8;
-ctx2.beginPath();
-ctx2.ellipse(hx + 18, hy + 28, 16, 14, 0, 0, Math.PI * 2);
-ctx2.fill();
-ctx2.globalAlpha = 1;
-
-// Rotor arm
-ctx2.fillStyle = '#555';
-ctx2.fillRect(hx + 20, hy + 14, 40, 5);
-
-// Blades
-ctx2.save();
-ctx2.translate(hx + 40, hy + 16);
-ctx2.rotate(helicopter.bladeAngle);
-ctx2.fillStyle = 'rgba(180,180,180,0.8)';
-ctx2.fillRect(-40, -2, 80, 4);
-ctx2.rotate(Math.PI / 2);
-ctx2.fillRect(-30, -2, 60, 4);
-ctx2.restore();
-
-// Tail
-ctx2.fillStyle = '#2a3a2a';
-ctx2.fillRect(hx + 68, hy + 22, 20, 15);
-
-// GOAL label
-ctx2.font = 'bold 11px Bebas Neue, sans-serif';
-ctx2.fillStyle = '#ffd700';
-ctx2.textAlign = 'center';
-ctx2.fillText('ESCAPE!', hx + 40, hy + 14);
-ctx2.shadowBlur = 0;
-
-// Bullets
-bullets.forEach(b => {
-ctx2.save();
-ctx2.shadowBlur = 10;
-ctx2.shadowColor = b.color;
-ctx2.fillStyle = b.color;
-ctx2.beginPath();
-ctx2.ellipse(b.x, b.y, 6, 3, b.vx > 0 ? 0 : Math.PI, 0, Math.PI * 2);
-ctx2.fill();
-
-// Trail
-ctx2.globalAlpha = 0.3;
-ctx2.fillStyle = '#ffff88';
-ctx2.beginPath();
-ctx2.ellipse(b.x - b.vx * 2, b.y, 4, 2, b.vx > 0 ? 0 : Math.PI, 0, Math.PI * 2);
-ctx2.fill();
-ctx2.globalAlpha = 1;
-ctx2.shadowBlur = 0;
-ctx2.restore();
-});
-
-// Players
-players.forEach((p, i) => {
-if (!p.alive) return;
-
-ctx2.save();
-ctx2.translate(p.x + p.w / 2, p.y + p.h / 2);
-if (p.facing < 0) ctx2.scale(-1, 1);
-
-// Stun flash
-if (p.stunTimer > 0 && Math.floor(p.stunTimer / 4) % 2 === 0) {
-ctx2.globalAlpha = 0.4;
-}
-
-// Shield aura
-if (p.hasShield) {
-ctx2.shadowBlur = 20;
-ctx2.shadowColor = '#88ffff';
-ctx2.strokeStyle = 'rgba(136,255,255,0.6)';
-ctx2.lineWidth = 2;
-ctx2.beginPath();
-ctx2.arc(0, 0, 22, 0, Math.PI * 2);
-ctx2.stroke();
-ctx2.shadowBlur = 0;
-}
-
-// Speed boost trail
-if (p.speedBoost > 0) {
-ctx2.globalAlpha = 0.2;
-ctx2.fillStyle = '#ffaa00';
-ctx2.fillRect(-p.w / 2 - 10, -p.h / 2, 10, p.h);
-ctx2.globalAlpha = p.stunTimer > 0 && Math.floor(p.stunTimer / 4) % 2 === 0 ? 0.4 : 1;
-}
-
-// Shadow
-ctx2.fillStyle = 'rgba(0,0,0,0.3)';
-ctx2.beginPath();
-ctx2.ellipse(0, p.h / 2 + 2, 12, 4, 0, 0, Math.PI * 2);
-ctx2.fill();
-
-// Body
-ctx2.shadowBlur = 10;
-ctx2.shadowColor = p.color;
-ctx2.fillStyle = p.color;
-ctx2.beginPath();
-ctx2.roundRect(-p.w / 2, -p.h / 2, p.w, p.h, 4);
-ctx2.fill();
-
-// Chest highlight
-ctx2.fillStyle = 'rgba(255,255,255,0.15)';
-ctx2.beginPath();
-ctx2.roundRect(-p.w / 2 + 3, -p.h / 2 + 3, p.w - 6, p.h / 2, 3);
-ctx2.fill();
-
-// Eyes
-ctx2.fillStyle = '#fff';
-ctx2.beginPath();
-ctx2.arc(4, -4, 4, 0, Math.PI * 2);
-ctx2.fill();
-ctx2.fillStyle = '#222';
-ctx2.beginPath();
-ctx2.arc(5, -4, 2.5, 0, Math.PI * 2);
-ctx2.fill();
-
-// Visor
-ctx2.fillStyle = p.dark;
-ctx2.fillRect(-p.w / 2, -p.h / 2 + 2, p.w, 6);
-ctx2.fillStyle = 'rgba(255,255,255,0.5)';
-ctx2.fillRect(-p.w / 2 + 2, -p.h / 2 + 3, p.w - 4, 3);
-
-// Gun indicator
-if (p.hasGun) {
-ctx2.fillStyle = '#ffdd44';
-ctx2.fillRect(p.w / 2 - 2, -4, 12, 5);
-}
-
-// Legs (animated)
-const legOff = p.onGround ? Math.sin(p.animFrame / 4 * Math.PI) * 4 : 0;
-ctx2.fillStyle = p.dark;
-ctx2.fillRect(-8, p.h / 2 - 8, 7, 8 + legOff);
-ctx2.fillRect(1, p.h / 2 - 8, 7, 8 - legOff);
-
-ctx2.shadowBlur = 0;
-ctx2.restore();
-
-// Player label
-ctx2.font = 'bold 11px Bebas Neue, sans-serif';
-ctx2.fillStyle = p.color;
-ctx2.textAlign = 'center';
-ctx2.fillText('P' + (i + 1), p.x + p.w / 2, p.y - 6);
-});
-
-// Particles
-particles_game.forEach(p => {
-ctx2.globalAlpha = p.alpha;
-ctx2.fillStyle = p.color;
-ctx2.beginPath();
-ctx2.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-ctx2.fill();
-});
-ctx2.globalAlpha = 1;
-
-// Timer overlay
-if (roundTimer <= 10 && roundTimer > 0) {
-ctx2.fillStyle = `rgba(255,68,68,${0.3 + Math.sin(Date.now() / 150) * 0.15})`;
-ctx2.font = 'bold 80px Bebas Neue, sans-serif';
-ctx2.textAlign = 'center';
-ctx2.fillText(roundTimer, W / 2, H / 2 + 30);
-}
-}
-
-// =====================================================
-// LEADERBOARD
-// =====================================================
-let matchHistory = JSON.parse(localStorage.getItem('gshootout_history') || '[]');
-
-function saveScore(winnerIdx) {
-matchHistory.unshift({
-winner: winnerIdx === 0 ? 'Player 1' : winnerIdx === 1 ? 'Player 2' : 'TIE',
-loser: winnerIdx === 0 ? 'Player 2' : winnerIdx === 1 ? 'Player 1' : 'TIE',
-score0: scores[0],
-score1: scores[1],
-date: new Date().toLocaleDateString()
-});
-if (matchHistory.length > 20) matchHistory.pop();
-localStorage.setItem('gshootout_history', JSON.stringify(matchHistory));
-}
-
-function renderLeaderboard() {
-const body = document.getElementById('lb-body');
-if (!matchHistory.length) {
-body.innerHTML = '<div class="no-scores">// NO MATCHES PLAYED YET //<br>START A GAME TO RECORD YOUR VICTORY</div>';
-return;
-}
-
-// Aggregate wins
-const wins = {};
-matchHistory.forEach(m => {
-if (m.winner !== 'TIE') {
-wins[m.winner] = (wins[m.winner] || 0) + 1;
-}
-});
-
-const sorted = Object.entries(wins).sort((a, b) => b[1] - a[1]);
-const rankClasses = ['gold', 'silver', 'bronze'];
-
-body.innerHTML = sorted.map(([name, w], i) => `
-<div class="lb-row">
-<div class="lb-rank ${rankClasses[i] || ''}">${i + 1}</div>
-<div class="lb-winner">${name}</div>
-<div class="lb-loser">${name === 'Player 1' ? 'Player 2' : 'Player 1'}</div>
-<div class="lb-wins">${w}</div>
-</div>
-`).join('') + `
-<div style="border-top:1px solid #2a2a3a;padding:14px 18px;font-size:13px;color:#666">
-Last match: ${matchHistory[0].winner} won (${matchHistory[0].score0}–${matchHistory[0].score1}) · ${matchHistory[0].date}
-</div>
-`;
-}
-
-function clearScores() {
-if (confirm('Clear all match history?')) {
-matchHistory = [];
-localStorage.removeItem('gshootout_history');
-renderLeaderboard();
-}
-}
-
-// Initial idle draw
-(function idleDraw() {
-if (gameState !== 'idle') return;
-ctx2.fillStyle = '#0d1117';
-ctx2.fillRect(0, 0, W, H);
-const g = ctx2.createLinearGradient(0, 0, W, H);
-g.addColorStop(0, 'rgba(255,68,68,0.1)');
-g.addColorStop(1, 'rgba(68,170,255,0.1)');
-ctx2.fillStyle = g;
-ctx2.fillRect(0, 0, W, H);
-for (let i = 0; i < 40; i++) {
-const sx = (i * 127) % W;
-const sy = (i * 83) % (H * 0.7);
-ctx2.fillStyle = 'rgba(255,255,255,0.3)';
-ctx2.fillRect(sx, sy, 1, 1);
-}
-requestAnimationFrame(idleDraw);
-})();
-</script>
+</main>
 
 </body>
 </html>
